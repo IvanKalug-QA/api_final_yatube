@@ -1,6 +1,6 @@
 # api_final
 
-### Как запустить проект:
+# Как запустить проект:
 
 ## 1. Клонируйте репозиторий и перейдите в него в командной строке:
     - git clone https://github.com/IvanKalug-QA/api_final_yatube.git
@@ -9,10 +9,10 @@
 ## 2. Создайте и активируйте виртуальное окружение:
     - python3 -m venv env
 
-    # Если у вас Linux/macOS:
+     Если у вас Linux/macOS:
         - source env/bin/activate
 
-    # Если у вас windows:
+     Если у вас windows:
         - source env/scripts/activate
 
 ## 3. Установите зависимости из файла requirements.txt:
