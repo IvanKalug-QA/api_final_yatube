@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
 from rest_framework.viewsets import (ModelViewSet, ReadOnlyModelViewSet,
                                      GenericViewSet)
 from rest_framework.pagination import LimitOffsetPagination
@@ -8,13 +7,11 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter
 
-from posts.models import Post, Group, Comment, Follow
+from posts.models import Post, Group
 from .serializers import (PostSerializer,
                           GropuSerializer,
                           CommentSerializer,
                           FollowSerialezer)
-
-User = get_user_model()
 
 
 class ListCreateMixin(GenericViewSet, ListModelMixin, CreateModelMixin):
@@ -52,7 +49,6 @@ class GroupViewSet(ReadOnlyModelViewSet):
 
 
 class CommentViewSet(PerformUpdateDestoyMixin, ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
@@ -63,7 +59,6 @@ class CommentViewSet(PerformUpdateDestoyMixin, ModelViewSet):
 
 
 class FollowViewSet(ListCreateMixin):
-    queryset = Follow.objects.all()
     serializer_class = FollowSerialezer
     permission_classes = (IsAuthenticated,)
     filter_backends = (SearchFilter,)
