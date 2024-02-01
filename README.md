@@ -1,6 +1,6 @@
 # api_final
 
-### Как запустить проект:
+#### Как запустить проект:
 
 ## 1. Клонируйте репозиторий и перейдите в него в командной строке:
     - git clone https://github.com/IvanKalug-QA/api_final_yatube.git
