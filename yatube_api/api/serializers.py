@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
+from rest_framework.exceptions import ParseError
 
 from posts.models import Comment, Post, Follow, Group
 
@@ -25,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = ('id', 'author', 'text', 'pub_date', 'image', 'group')
-        read_only_fields = ('id', 'author', 'pub_date')
+        read_only_fields = ('id', 'pub_date')
         model = Post
 
 
@@ -43,7 +44,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class GropuSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'title', 'slug', 'description')
-        read_only_fields = ('id', 'title', 'slug', 'description')
+        read_only_fields = fields
         model = Group
 
 
@@ -59,7 +60,6 @@ class FollowSerialezer(serializers.ModelSerializer):
 
     class Meta:
         fields = ('user', 'following')
-        read_only_fields = ('user',)
         model = Follow
         validators = [
             serializers.UniqueTogetherValidator(
@@ -68,3 +68,8 @@ class FollowSerialezer(serializers.ModelSerializer):
                 message='Вы уже подписаны!'
             )
         ]
+
+    def validate_following(self, value):
+        if self.context['request'].user == value:
+            raise ParseError('На себя подписываться нельзя!')
+        return value

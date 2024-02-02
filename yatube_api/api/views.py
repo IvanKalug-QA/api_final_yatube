@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import (ModelViewSet, ReadOnlyModelViewSet,
                                      GenericViewSet)
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.exceptions import PermissionDenied, ParseError
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter
@@ -25,12 +25,12 @@ class PerformUpdateDestoyMixin:
 
     def perform_update(self, serializer):
         if serializer.instance.author != self.request.user:
-            raise PermissionDenied("Доступ запрещен!")
+            raise PermissionDenied('Доступ запрещен!')
         super().perform_update(serializer)
 
     def perform_destroy(self, instance):
         if instance.author != self.request.user:
-            raise PermissionDenied("Доступ запрещен!")
+            raise PermissionDenied('Доступ запрещен!')
         super().perform_destroy(instance)
 
 
@@ -65,8 +65,6 @@ class FollowViewSet(ListCreateMixin):
     search_fields = ('following__username',)
 
     def perform_create(self, serializer):
-        if self.request.user == serializer.validated_data.get('following'):
-            raise ParseError('На себя подписываться нельзя!')
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
